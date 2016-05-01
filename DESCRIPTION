@@ -1,0 +1,13 @@
+Package: prepdm
+Title: Prepare Design Matrix
+Version: 0.1
+Authors@R: person("Benjamin R.", "Fitzpatrick", email = "ben.r.fitzpatrick@gmail.com", role = c("aut", "cre"))
+Description: Functions to aid preparation of design matrices for analysis.
+Imports:
+  dplyr,
+  tidyr,
+  ggplot2
+Depends: R (>= 3.2.5)
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
