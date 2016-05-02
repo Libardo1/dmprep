@@ -16,7 +16,7 @@ ccaaf <- function(DM = DM,
   require(tidyr) # package::function() 
   require(ggplot2) # instead of require
   if(na.action == 'Halt'){    
-    if( !(nrow(na.omit(Data)) == nrow(Data)) ) {
+    if( !(nrow(na.omit(DM)) == nrow(DM)) ) {
       stop('DM contains NAs')
     }
   }  
