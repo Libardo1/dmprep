@@ -71,7 +71,7 @@ ccaaf <- function(DM = DM,
     }
   }
   DM.d2 <- select(.data = DM, -one_of(drop))
-  Output <- list(drop = drop, DM = DM)
+  Output <- list(drop = drop, FDM = DM.d2)
   return(Output)
 }
 
