@@ -4,7 +4,7 @@
 # assess the collinearity between covariates
 # filter to enforce a maxium permitted correlation coefficient magnitude between covariate pairs
 
-ccaaf <- function(DM = DM,
+dm_filter <- function(DM = DM,
                   prefer = c('band1', 'band2', 'band3', 'band4', 'band5', 'band6', 'NDVI'),
                   mpccm = 0.8,
                   na.action = c('Ignore', 'Halt')){

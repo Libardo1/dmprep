@@ -2,7 +2,7 @@
 
 # note this doesn't recenter and rescale created polynomial and interaction terms either your modelling function will have to do that or you should do it yourself before supplying the output of this function to your modelling function
 
-aiapt <- function(LME = DM,
+dm_expand <- function(LME = DM,
                   mpo = 4){
                    
   # LME = Linear Main Effects design matrix (as dataframe)
