@@ -9,7 +9,6 @@ Test.Mat[,!apply(X = Test.Mat, MARGIN = 2, FUN = anyNA)]
 
 # remove columns that contain entries of exactly 0 in all rows:
 
-
 all.zero <- function(x){
     x.naom <- na.omit(x)
     if(length(x.naom) == 0){
@@ -22,7 +21,13 @@ all.zero <- function(x){
     if((length(x.u) == 1) & x.u == 0){
       return(TRUE)
     }
+    if((length(x.u) == 1) & !(x.u == 0)){
+      print('non zero unique value in all of this column')  
+      return(FALSE)
+    }
+
 }
+
 
 
 Test.Mat[,!apply(X = Test.Mat, MARGIN = 2, FUN = all.zero)]
