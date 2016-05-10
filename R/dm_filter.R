@@ -39,7 +39,8 @@
 dm_filter <- function(DM = DM,
                   prefer = c('band1', 'band2', 'band3', 'band4', 'band5', 'band6', 'NDVI'),
                   mpccm = 0.8,
-                  na.action = c('Ignore', 'Halt')){
+                      na.action = c('Ignore', 'Halt')){
+  # it appear 'raster' also has a select function so we will need to use package::function syntax to be safe
   require(dplyr) # these need to go, use 
   require(tidyr) # package::function() 
   require(ggplot2) # instead of require
@@ -61,34 +62,34 @@ dm_filter <- function(DM = DM,
     }
   }
   # filter out the rows for the correlation of covariates with themselves             
-  VCC.df <- filter(.data = C.df, !(Var1 == Var2) & abs(Cor) > mpccm) # Very Correlated Covariates
+  VCC.df <- dplyr::filter(.data = C.df, !(Var1 == Var2) & abs(Cor) > mpccm) # Very Correlated Covariates
   drop <- vector(mode = 'character')
   pref.l <- length(prefer)
   for(i in 1:pref.l){
-    drop.i.v2 <- filter(.data = VCC.df, Var1 == prefer[i]) %>% select(Var2)
-    drop.i.v1 <- filter(.data = VCC.df, Var2 == prefer[i]) %>% select(Var1)
+    drop.i.v2 <- dplyr::filter(.data = VCC.df, Var1 == prefer[i]) %>% dplyr::select(Var2)
+    drop.i.v1 <- dplyr::filter(.data = VCC.df, Var2 == prefer[i]) %>% dplyr::select(Var1)
     drop <- unique(c(drop, drop.i.v2[,1], drop.i.v1[,1]))
     prefer <- prefer[!(prefer %in% drop)]
-    VCC.df <- filter(.data = VCC.df, !(Var1 %in% drop) & !(Var2 %in% drop))
+    VCC.df <- dplyr::filter(.data = VCC.df, !(Var1 %in% drop) & !(Var2 %in% drop))
   }
-  DM.d1 <- select(.data = DM, -one_of(drop))
+  DM.d1 <- dplyr::select(.data = DM, -one_of(drop))
   cmat.d1 <- data.frame(cor(DM.d1, use = 'complete.obs'))
   cmat.d1$Var1 <- row.names(cmat.d1)
   C.d1.df <- gather(data = cmat.d1, value = Cor, key = Var2, -Var1)
-  C.d1.df.F <- filter(.data = C.d1.df, !(Var1 == Var2) & abs(Cor) > mpccm)
+  C.d1.df.F <- dplyr::filter(.data = C.d1.df, !(Var1 == Var2) & abs(Cor) > mpccm)
   # final drop at random (if necessary)
   if( nrow(C.d1.df.F) > 0 ){
     while( (max(abs(C.d1.df.F$Cor)) > mpccm)){
       col.i <- sample(x = 1:2, size = 1) 
-      drop.i <- select(.data = C.d1.df.F, col.i) %>% slice(.,1)
+      drop.i <- dplyr::select(.data = C.d1.df.F, col.i) %>% slice(.,1)
       drop <- unique(c(drop, drop.i[,1]))
-      C.d1.df.F <- filter(.data = C.d1.df.F, !(Var1 %in% drop) & !(Var2 %in% drop))
+      C.d1.df.F <- dplyr::filter(.data = C.d1.df.F, !(Var1 %in% drop) & !(Var2 %in% drop))
       if( (nrow(C.d1.df.F) == 0)  ){
           break()
       }
     }
   }
-  DM.d2 <- select(.data = DM, -one_of(drop))
+  DM.d2 <- dplyr::select(.data = DM, -one_of(drop))
   Output <- list(drop = drop, FDM = DM.d2)
   return(Output)
 }
