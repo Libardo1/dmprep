@@ -19,7 +19,7 @@ nrow(C.df)
 
 p <- ggplot(aes(x = Var1, y = Var2, fill = Cor), data = C.df)
 
-p + geom_raster() + coord_equal() + scale_fill_distiller(palette = 'Spectral', limits = c(0,0.8), na.value = 'white') + theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5), axis.text.y = element_text(vjust = 0.5), panel.background = element_rect(fill = 'white')) + labs(x = '', y = '')
+p + geom_raster() + coord_equal() + scale_fill_distiller(palette = 'Spectral', limits = c(0,0.8), na.value = 'white') + theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5), axis.text.y = element_text(vjust = 0.5), panel.background = element_rect(fill = 'white'), legend.key.height = unit(x = 4, units = 'cm')) + labs(x = '', y = '')
 
 # chord diagram is harder - however chord diagram easier to interpret
 
