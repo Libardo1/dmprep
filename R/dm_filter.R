@@ -40,10 +40,6 @@ dm_filter <- function(DM = DM,
                   prefer = c('band1', 'band2', 'band3', 'band4', 'band5', 'band6', 'NDVI'),
                   mpccm = 0.8,
                       na.action = c('Ignore', 'Halt')){
-  # it appear 'raster' also has a select function so we will need to use package::function syntax to be safe
-  require(dplyr) # these need to go, use 
-  require(tidyr) # package::function() 
-  require(ggplot2) # instead of require
   if(na.action == 'Halt'){    
     if( !(nrow(na.omit(DM)) == nrow(DM)) ) {
       stop('DM contains NAs')
@@ -51,7 +47,7 @@ dm_filter <- function(DM = DM,
   }  
   cmat <- data.frame(cor(DM, use = 'complete.obs'))
   cmat$Var1 <- row.names(cmat)
-  C.df <- gather(data = cmat, value = Cor, key = Var2, -Var1)
+  C.df <- tidyr::gather(data = cmat, value = Cor, key = Var2, -Var1)
   # filer out all pairs which we couldnt calculate a correlation for due to missing values
   if(na.action == 'Ignore'){
     C.df <- na.omit(C.df)
@@ -75,7 +71,7 @@ dm_filter <- function(DM = DM,
   DM.d1 <- dplyr::select(.data = DM, -one_of(drop))
   cmat.d1 <- data.frame(cor(DM.d1, use = 'complete.obs'))
   cmat.d1$Var1 <- row.names(cmat.d1)
-  C.d1.df <- gather(data = cmat.d1, value = Cor, key = Var2, -Var1)
+  C.d1.df <- tidyr::gather(data = cmat.d1, value = Cor, key = Var2, -Var1)
   C.d1.df.F <- dplyr::filter(.data = C.d1.df, !(Var1 == Var2) & abs(Cor) > mpccm)
   # final drop at random (if necessary)
   if( nrow(C.d1.df.F) > 0 ){
