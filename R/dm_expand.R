@@ -31,7 +31,7 @@
 dm_expand <- function(LME = DM,
                   mpo = 4){
   # this function will only create interactions of linear main effects
-  if( (max(abs((colMeans(LME)))) < 1e-10) | (max(colSums(LME^2)) > 1) ){
+  if( (max(abs((colMeans(LME)))) > 1e-10) | (max(colSums(LME^2)) > 1) ){
     print('You have not recentred and rescaled your design matrix prior to requesting the calculation of polynomial and interactions terms. I\'ll do this for you now, recentring to column means of zero and column L1 norms of 1.')
     X <- LME
     X.R <- scale(x = X, center = colMeans(X), scale = FALSE)
