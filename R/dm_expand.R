@@ -68,6 +68,10 @@ dm_expand <- function(LME = DM,
     cols = strsplit(x = colnames(IO2.2L.DM)[i], split = '_X_')[[1]]
     IO2.2L.DM[,i] = Data[,cols[1]]*Data[,cols[2]]
   }
-  Data.P4I2.DM = data.frame(Data, IO2.2L.DM, PDM)
+  if(mpo > 1){
+    Data.P4I2.DM = data.frame(Data, IO2.2L.DM, PDM)
+  } else{
+      Data.P4I2.DM = data.frame(Data, IO2.2L.DM)
+  }
   return(Data.P4I2.DM)
 }
