@@ -40,17 +40,19 @@ dm_expand <- function(LME = DM,
   }
   Data = LME
   n.LME = ncol(Data)
-  # Expand Desing Matrix to include Polynomial Terms up to order mpo for all covariates in LME
-  P.ng = expand.grid(colnames(Data), as.character(2:mpo))
-  colnames(P.ng) = c('Var','P')
-  PDM = data.frame(matrix(0, nrow = nrow(Data), ncol = nrow(P.ng))) # Polynomial Terms Dataframe
-  P.n = character(nrow(P.ng))
-  for(i in 1:nrow(P.ng)){
-    P.n[i] = paste(P.ng[i,'Var'], P.ng[i,'P'], sep = '.')
-  }
-  colnames(PDM) = P.n
-  for(i in 1:nrow(P.ng)){
-    PDM[,paste(P.ng[i,'Var'], P.ng[i,'P'], sep = '.')] = (Data[,paste(P.ng[i,'Var'])])^(as.numeric(paste(P.ng[i,'P'])))
+  if(mpo > 1){
+    # Expand Desing Matrix to include Polynomial Terms up to order mpo for all covariates in LME
+    P.ng = expand.grid(colnames(Data), as.character(2:mpo))
+    colnames(P.ng) = c('Var','P')
+    PDM = data.frame(matrix(0, nrow = nrow(Data), ncol = nrow(P.ng))) # Polynomial Terms Dataframe
+    P.n = character(nrow(P.ng))
+    for(i in 1:nrow(P.ng)){
+      P.n[i] = paste(P.ng[i,'Var'], P.ng[i,'P'], sep = '.')
+    }
+    colnames(PDM) = P.n
+    for(i in 1:nrow(P.ng)){
+      PDM[,paste(P.ng[i,'Var'], P.ng[i,'P'], sep = '.')] = (Data[,paste(P.ng[i,'Var'])])^(as.numeric(paste(P.ng[i,'P'])))
+    }
   }
   # Expand Design Matrix to include Columns for Interactions to Order = 1/2 Max Polynomial Order
   # Currrently all that is implemented is the facility to include Order 2 Interactions:
